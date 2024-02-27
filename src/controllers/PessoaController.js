@@ -8,10 +8,24 @@ class PessoaController extends Controller {
     super(pessoaServices);
   }
 
-  async pegaMatriculas(req, res) {
+  async pegaMatriculasAtivas(req, res) {
     const { estudanteId } = req.params;
     try {
-      const listaMatriculas = await pessoaServices.pegaMatriculasPorEstudante(Number(estudanteId));
+      const listaMatriculas = await pessoaServices.pegaMatriculasAtivasPorEstudante(
+        Number(estudanteId)
+      );
+      return res.status(200).json(listaMatriculas);
+    } catch (erro) {
+      return res.status(500).json({ erro: erro.message });
+    }
+  }
+
+  async pegaTodasAsMatriculas(req, res) {
+    const { estudanteId } = req.params;
+    try {
+      const listaMatriculas = await pessoaServices.pegaTodasMatriculasPorEstudante(
+        Number(estudanteId)
+      );
       return res.status(200).json(listaMatriculas);
     } catch (erro) {
       return res.status(500).json({ erro: erro.message });
@@ -20,7 +34,7 @@ class PessoaController extends Controller {
 
   async pegaTodasAsPessoas(req, res) {
     try {
-      const listaTodasAsPessoas  = await pessoaServices.pegaPessoasEscopoTodos();
+      const listaTodasAsPessoas = await pessoaServices.pegaPessoasEscopoTodos();
       return res.status(200).json(listaTodasAsPessoas);
     } catch (erro) {
       return res.status(500).json({ erro: erro.message });
@@ -29,7 +43,8 @@ class PessoaController extends Controller {
 
   async pegaTodosDesativados(req, res) {
     try {
-      const listaTodasAsPessoas  = await pessoaServices.pegaPessoasEscopoDesativados();
+      const listaTodasAsPessoas =
+        await pessoaServices.pegaPessoasEscopoDesativados();
       return res.status(200).json(listaTodasAsPessoas);
     } catch (erro) {
       return res.status(500).json({ erro: erro.message });
